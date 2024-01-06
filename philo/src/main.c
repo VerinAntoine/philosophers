@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2023/12/28 11:06:01 by averin           ###   ########.fr       */
+/*   Updated: 2024/01/06 13:53:43 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int main(int argc, char const *argv[])
 {
-	(void)argc;
-	(void)argv;
+	if (argc < 5 || argc > 6)
+		return (printf(ERROR_USAGE, argv[0]), 1);
 	return 0;
 }

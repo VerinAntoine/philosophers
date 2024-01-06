@@ -2,7 +2,9 @@ NAME	:= philo
 CC		:= cc
 CFLAGS	:= -Wall -Wextra -Werror
 
-OBJ_DIR	:= ./obj
+OBJS_DIR	:= obj
+SRCS_DIR	:= src
+INCLDS_DIR	:= include
 
 define SRC :=
 	main.c
@@ -15,10 +17,10 @@ $(NAME): $(OBJS)
 	@echo '* Assembling $(NAME)'
 	@$(CC) $(CFLAGS) $(OBJS) -o $@
 
-$(OBJS_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	@echo '- Compiling $<'
 	@mkdir -p $(OBJS_DIR)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -I $(INCLDS_DIR) -c $< -o $@
 
 .PHONY: all
 all: $(NAME)
@@ -39,4 +41,4 @@ re: fclean $(NAME)
 .PHONY: norm
 norm:
 	@make -C $(LIBFT_DIR) norm $(MAKE_FLAG)
-	@norminette $(SRC_DIR) $(INCLD_DIR)
+	@norminette $(SRCS_DIR) $(INCLDS_DIR)
