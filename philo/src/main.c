@@ -29,5 +29,10 @@ int	main(int argc, char *argv[])
 		return (printf(ERROR_USAGE, argv[0]), 1);
 	if (!parse_params(argv + 1, &data.param))
 		return (printf(ERROR_USAGE, argv[0]), 1);
+	printf("philo_number: %d\n", data.param.philo_number);
+	printf("time_to_die: %d\n", data.param.time_to_die);
+	printf("time_to_eat: %d\n", data.param.time_to_eat);
+	printf("time_to_sleep: %d\n", data.param.time_to_sleep);
+	printf("eat_number: %d\n", data.param.eat_number);
 	return (0);
 }
