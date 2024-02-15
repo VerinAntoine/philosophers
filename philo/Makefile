@@ -1,6 +1,7 @@
-NAME	:= philo
-CC		:= cc
-CFLAGS	:= -Wall -Wextra -Werror -pthread
+NAME		:= philo
+CC			:= cc
+CFLAGS		:= -Wall -Wextra -Werror -pthread
+DEPFLAGS	:= -MMD -MP
 
 OBJS_DIR	:= obj
 SRCS_DIR	:= src
@@ -15,15 +16,17 @@ endef
 SRC := $(strip $(SRC))
 
 OBJS := $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRC))
+DEPS		:= $(patsubst %.c,$(OBJS_DIR)/%.d,$(SRC))
 
 $(NAME): $(OBJS)
 	@echo '* Assembling $(NAME)'
 	@$(CC) $(CFLAGS) $(OBJS) -o $@
 
+-include $(DEPS)
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	@echo '- Compiling $<'
 	@mkdir -p $(OBJS_DIR)
-	@$(CC) $(CFLAGS) -I $(INCLDS_DIR) -c $< -o $@
+	@$(CC) $(DEPFLAGS) $(CFLAGS) -I $(INCLDS_DIR) -c $< -o $@
 
 .PHONY: all
 all: $(NAME)
