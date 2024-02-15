@@ -22,14 +22,6 @@
 # define ERROR_USAGE "Usage: %s number_of_philosophers time_to_die time_to_eat \
 time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
-typedef enum e_action
-{
-	TRY_EAT,
-	EAT,
-	THINK,
-	SLEEP
-}	t_action;
-
 typedef pthread_mutex_t t_fork;
 
 typedef struct s_param
@@ -43,8 +35,14 @@ typedef struct s_param
 
 typedef struct s_philo
 {
+	enum
+	{
+		TRY_EAT,
+		EAT,
+		THINK,
+		SLEEP
+	}	action;
 	pthread_t	thread;
-	t_action	current_action;
 	long		action_time;
 }	t_philo;
 
