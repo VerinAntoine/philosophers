@@ -9,6 +9,7 @@ INCLDS_DIR	:= include
 define SRC :=
 	main.c
 	parser.c
+	process.c
 	utils.c
 endef
 SRC := $(strip $(SRC))
