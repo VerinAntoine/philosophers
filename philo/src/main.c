@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2024/01/09 13:28:55 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/15 10:03:42 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@ int	main(int argc, char *argv[])
 		return (printf(ERROR_USAGE, argv[0]), 1);
 	if (!parse_params(argv + 1, &data.param))
 		return (printf(ERROR_USAGE, argv[0]), 1);
-	printf("philo_number: %d\n", data.param.philo_number);
-	printf("time_to_die: %d\n", data.param.time_to_die);
-	printf("time_to_eat: %d\n", data.param.time_to_eat);
-	printf("time_to_sleep: %d\n", data.param.time_to_sleep);
-	printf("eat_number: %d\n", data.param.eat_number);
+	print_params(data.param);
 	return (0);
 }

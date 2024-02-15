@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:57:39 by averin            #+#    #+#             */
-/*   Updated: 2024/01/09 13:27:41 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/15 10:03:03 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ typedef struct s_data
 	t_param	param;
 }	t_data;
 
-int	ft_atoi(const char *nptr);
+int		ft_atoi(const char *nptr);
 
-int	parse_params(char **argv, t_param *params);
+int		parse_params(char **argv, t_param *params);
+void	print_params(t_param param);
 
 #endif
