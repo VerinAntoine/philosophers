@@ -6,15 +6,15 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2024/02/15 10:03:42 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/17 18:47:41 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_miliseconds()
+long	get_miliseconds(void)
 {
-	struct timeval time;
+	struct timeval	time;
 
 	if (gettimeofday(&time, NULL) == -1)
 		return (printf("/!\\ time error\n"), -1);
