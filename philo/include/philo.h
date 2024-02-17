@@ -35,20 +35,28 @@ typedef struct s_param
 
 typedef struct s_philo
 {
-	enum
+	enum	e_action
 	{
-		TRY_EAT,
+		TRY_EAT = 1,
 		EAT,
 		THINK,
-		SLEEP
-	}	action;
-	pthread_t	thread;
-	long		action_time;
+		SLEEP,
+	}				action;
+	pthread_t		thread;
+	long			action_time;
+	t_fork			left_fork;
+	t_fork			right_fork;
+	enum e_state	*state;
 }	t_philo;
 
 typedef struct s_data
 {
-	int		running;
+	enum	e_state
+	{
+		WAITING = 1,
+		RUNNING,
+		STOPED
+	}		state;
 	t_philo	*philos;
 	t_fork	*forks;
 	t_param	param;
