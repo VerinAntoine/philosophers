@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:57:39 by averin            #+#    #+#             */
-/*   Updated: 2024/02/16 09:32:09 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/17 18:45:26 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define ERROR_USAGE "Usage: %s number_of_philosophers time_to_die time_to_eat \
 time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
-typedef pthread_mutex_t t_fork;
+typedef pthread_mutex_t	t_fork;
 
 typedef struct s_param
 {
