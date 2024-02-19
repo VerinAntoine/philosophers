@@ -17,10 +17,14 @@ void	*philo_routine(void *ptr)
 	t_philo	*philo;
 
 	philo = ptr;
+	pthread_mutex_lock(&philo->data->write);
 	printf("[%ld] philo n %d waiting to start\n", get_miliseconds(),
 		philo->number);
-	while (get_var(philo->state) == WAITING)
+	pthread_mutex_unlock(&philo->data->write);
+	while (get_var(&philo->data->state) == WAITING)	
 		;
+	pthread_mutex_lock(&philo->data->write);
 	printf("[%ld] %d finished waiting\n", get_miliseconds(), philo->number);
+	pthread_mutex_unlock(&philo->data->write);
 	return (0);
 }

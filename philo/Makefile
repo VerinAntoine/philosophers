@@ -1,6 +1,6 @@
 NAME		:= philo
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -pthread -fsanitize=thread -g3
+CFLAGS		:= -Wall -Wextra -Werror -pthread -g3
 DEPFLAGS	:= -MMD -MP
 
 OBJS_DIR	:= obj

@@ -19,6 +19,9 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
+# define EMEM 1
+# define EGEN 2
+
 # define ERROR_USAGE "Usage: %s number_of_philosophers time_to_die time_to_eat \
 time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
@@ -30,6 +33,26 @@ typedef struct s_var
 	int				content;
 }	t_var;
 
+typedef struct s_status
+{
+	enum	e_action
+	{
+		TRY_EAT = 1,
+		EAT,
+		THINK,
+		SLEEP,
+	}				value;
+	pthread_mutex_t	mutex;
+	long			action_time;
+}	t_status;
+
+enum	e_state
+{
+	WAITING = 1,
+	RUNNING,
+	STOPED
+};
+
 typedef struct s_param
 {
 	int	philo_number;
@@ -39,37 +62,22 @@ typedef struct s_param
 	int	eat_number;
 }	t_param;
 
+typedef struct s_data
+{
+	pthread_mutex_t	write;
+	t_var			state;
+	t_param			param;
+}	t_data;
+
 typedef struct s_philo
 {
 	int			number;
-	enum	e_action
-	{
-		TRY_EAT = 1,
-		EAT,
-		THINK,
-		SLEEP,
-	}			action;
 	pthread_t	thread;
-	long		action_time;
-	t_fork		left_fork;
-	t_fork		right_fork;
-	t_var		*state;
+	t_status	status;
+	t_fork		*left_fork;
+	t_fork		*right_fork;
+	t_data		*data;
 }	t_philo;
-
-enum	e_state
-{
-	WAITING = 1,
-	RUNNING,
-	STOPED
-};
-
-typedef struct s_data
-{
-	t_var	state;
-	t_philo	*philos;
-	t_fork	*forks;
-	t_param	param;
-}	t_data;
 
 long	get_miliseconds(void);
 
