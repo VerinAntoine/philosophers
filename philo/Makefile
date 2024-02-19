@@ -1,6 +1,6 @@
 NAME		:= philo
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -pthread
+CFLAGS		:= -Wall -Wextra -Werror -pthread -fsanitize=thread -g3
 DEPFLAGS	:= -MMD -MP
 
 OBJS_DIR	:= obj
@@ -12,6 +12,7 @@ define SRC :=
 	parser.c
 	process.c
 	utils.c
+	var.c
 endef
 SRC := $(strip $(SRC))
 

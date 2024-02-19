@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process.c                                          :+:      :+:    :+:   */
+/*   var.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/15 09:58:11 by averin            #+#    #+#             */
-/*   Updated: 2024/02/18 21:26:32 by averin           ###   ########.fr       */
+/*   Created: 2024/02/18 21:21:54 by averin            #+#    #+#             */
+/*   Updated: 2024/02/18 21:26:01 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*philo_routine(void *ptr)
+void	init_var(t_var *var, int val)
 {
-	t_philo	*philo;
+	pthread_mutex_init(&var->mutex, NULL);
+	var->content = val;
+}
 
-	philo = ptr;
-	printf("[%ld] philo n %d waiting to start\n", get_miliseconds(),
-		philo->number);
-	while (get_var(philo->state) == WAITING)
-		;
-	printf("[%ld] %d finished waiting\n", get_miliseconds(), philo->number);
-	return (0);
+void	set_var(t_var *var, int val)
+{
+	pthread_mutex_lock(&(var->mutex));
+	var->content = val;
+	pthread_mutex_unlock(&(var->mutex));
+}
+
+int	get_var(t_var *var)
+{
+	int	i;
+
+	pthread_mutex_lock(&(var->mutex));
+	i = var->content;
+	pthread_mutex_unlock(&(var->mutex));
+	return (i);
 }
