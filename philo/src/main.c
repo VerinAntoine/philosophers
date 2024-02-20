@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2024/02/18 21:26:00 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/20 13:30:04 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	init_forks(t_param param, t_fork **forks)
 		return (EMEM);
 	i = -1;
 	while (++i < param.philo_number)
-		pthread_mutex_init(&(*forks)[i], NULL);
+		pthread_mutex_init(&(*forks)[i].mutex, NULL);
 	return (0);
 }
 
