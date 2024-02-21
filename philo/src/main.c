@@ -6,11 +6,18 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2024/02/21 10:25:58 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/21 10:33:58 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	print_status(t_philo *philo, char *msg)
+{
+	pthread_mutex_lock(&philo->data->write);
+	printf("[%ld] %d %s\n", get_miliseconds(), philo->number, msg);
+	pthread_mutex_unlock(&philo->data->write);
+}
 
 long	get_miliseconds(void)
 {

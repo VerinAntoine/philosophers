@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:58:11 by averin            #+#    #+#             */
-/*   Updated: 2024/02/21 10:29:19 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/21 10:36:04 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,39 +22,38 @@ static void	set_status(t_philo *philo, int action)
 
 static void	do_sleep(t_philo *philo, t_param param)
 {
-	printf("[%ld] %d is sleeping\n", get_miliseconds(), philo->number);
+	print_status(philo, "is sleeping");
 	set_status(philo, SLEEP);
 	usleep(param.time_to_sleep * 1000);
 }
 
 static void	do_eat(t_philo *philo, t_param param)
 {
-	printf("[%ld] %d is thinking\n", get_miliseconds(), philo->number);
+	print_status(philo, "is thinking");
 	set_status(philo, THINK);
 	if (philo->number % 2)
 	{
 		while (get_var(philo->left_fork) != 0)
 			;
 		set_var(philo->left_fork, philo->number);
-		printf("[%ld] %d has taken left fork\n", get_miliseconds(), philo->number);
+		print_status(philo, "has taken left fork");
 		while (get_var(philo->right_fork) != 0)
 			;
 		set_var(philo->right_fork, philo->number);
-		printf("[%ld] %d has taken right fork\n", get_miliseconds(), philo->number);
+		print_status(philo, "has taken right fork");
 	}
 	else
 	{
 		while (get_var(philo->right_fork) != 0)
 			;
 		set_var(philo->right_fork, philo->number);
-		printf("[%ld] %d has taken right fork\n", get_miliseconds(), philo->number);
+		print_status(philo, "has taken right fork");
 		while (get_var(philo->left_fork) != 0)
 			;
 		set_var(philo->left_fork, philo->number);
-		printf("[%ld] %d has taken left fork\n", get_miliseconds(), philo->number);
+		print_status(philo, "has taken left fork");
 	}
-	
-	printf("[%ld] %d is eating\n", get_miliseconds(), philo->number);
+	print_status(philo, "is eating");
 	set_status(philo, EAT);
 	usleep(param.time_to_eat * 1000);
 	set_var(philo->left_fork, 0);
@@ -84,6 +83,6 @@ void	*philo_routine(void *ptr)
 			do_eat(philo, philo->data->param);
 		}
 	}
-	printf("[%ld] %d has finished\n", get_miliseconds(), philo->number);
+	print_status(philo, "has finished");
 	return (0);
 }

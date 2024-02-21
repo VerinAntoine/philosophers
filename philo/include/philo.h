@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:57:39 by averin            #+#    #+#             */
-/*   Updated: 2024/02/18 21:26:00 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/21 10:34:08 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ typedef struct s_status
 {
 	enum	e_action
 	{
-		TRY_EAT = 1,
-		EAT,
+		EAT = 1,
 		THINK,
 		SLEEP,
 	}				value;
@@ -50,7 +49,7 @@ enum	e_state
 {
 	WAITING = 1,
 	RUNNING,
-	STOPED
+	STOPED,
 };
 
 typedef struct s_param
@@ -79,6 +78,7 @@ typedef struct s_philo
 	t_data		*data;
 }	t_philo;
 
+void	print_status(t_philo *philo, char *msg);
 long	get_miliseconds(void);
 
 int		ft_atoi(const char *nptr);
