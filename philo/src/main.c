@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2024/02/21 10:33:58 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/21 12:31:21 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ long	get_miliseconds(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-// TODO: may need to check calculous for left fork
 int	setup_philo(t_data *data, t_fork *forks, t_philo **philos)
 {
 	int	i;
@@ -41,6 +40,7 @@ int	setup_philo(t_data *data, t_fork *forks, t_philo **philos)
 	{
 		(*philos)[i].number = i + 1;
 		(*philos)[i].data = data;
+		printf("* %d left=%d right=%d\n", i + 1, i, (i + 1) % data->param.philo_number);
 		(*philos)[i].right_fork = &(forks[i]);
 		(*philos)[i].left_fork = &(forks[(i + 1) % data->param.philo_number]);
 		pthread_mutex_init(&(*philos)[i].status.mutex, NULL);
