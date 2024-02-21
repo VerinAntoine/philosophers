@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:58:11 by averin            #+#    #+#             */
-/*   Updated: 2024/02/20 13:47:25 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/21 10:29:19 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	do_sleep(t_philo *philo, t_param param)
 {
 	printf("[%ld] %d is sleeping\n", get_miliseconds(), philo->number);
 	set_status(philo, SLEEP);
-	usleep(param.time_to_sleep);
+	usleep(param.time_to_sleep * 1000);
 }
 
 static void	do_eat(t_philo *philo, t_param param)
@@ -35,28 +35,28 @@ static void	do_eat(t_philo *philo, t_param param)
 	{
 		while (get_var(philo->left_fork) != 0)
 			;
-		set_var(philo->left_fork, 1);
+		set_var(philo->left_fork, philo->number);
 		printf("[%ld] %d has taken left fork\n", get_miliseconds(), philo->number);
 		while (get_var(philo->right_fork) != 0)
 			;
-		set_var(philo->right_fork, 1);
+		set_var(philo->right_fork, philo->number);
 		printf("[%ld] %d has taken right fork\n", get_miliseconds(), philo->number);
 	}
 	else
 	{
 		while (get_var(philo->right_fork) != 0)
 			;
-		set_var(philo->right_fork, 1);
+		set_var(philo->right_fork, philo->number);
 		printf("[%ld] %d has taken right fork\n", get_miliseconds(), philo->number);
 		while (get_var(philo->left_fork) != 0)
 			;
-		set_var(philo->left_fork, 1);
+		set_var(philo->left_fork, philo->number);
 		printf("[%ld] %d has taken left fork\n", get_miliseconds(), philo->number);
 	}
 	
 	printf("[%ld] %d is eating\n", get_miliseconds(), philo->number);
 	set_status(philo, EAT);
-	usleep(param.time_to_eat);
+	usleep(param.time_to_eat * 1000);
 	set_var(philo->left_fork, 0);
 	set_var(philo->right_fork, 0);
 }
@@ -84,5 +84,6 @@ void	*philo_routine(void *ptr)
 			do_eat(philo, philo->data->param);
 		}
 	}
+	printf("[%ld] %d has finished\n", get_miliseconds(), philo->number);
 	return (0);
 }

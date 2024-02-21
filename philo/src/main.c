@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2024/02/20 13:30:04 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/21 10:25:58 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ int	setup_philo(t_data *data, t_fork *forks, t_philo **philos)
 	i = -1;
 	while (++i < data->param.philo_number)
 	{
-		(*philos)[i].number = i;
+		(*philos)[i].number = i + 1;
 		(*philos)[i].data = data;
 		(*philos)[i].right_fork = &(forks[i]);
-		(*philos)[i].left_fork = &(forks[i % data->param.philo_number]);
+		(*philos)[i].left_fork = &(forks[(i + 1) % data->param.philo_number]);
 		pthread_mutex_init(&(*philos)[i].status.mutex, NULL);
 		if (pthread_create(&(*philos)[i].thread, NULL, &philo_routine,
 				&(*philos)[i]) == -1)
