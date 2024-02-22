@@ -6,11 +6,16 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:58:11 by averin            #+#    #+#             */
-/*   Updated: 2024/02/21 12:32:57 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/22 13:31:20 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static int	is_starving(t_philo *philo, t_param param)
+{
+	return (get_miliseconds() - philo->status.action_time > param.time_to_die);
+}
 
 static void	set_status(t_philo *philo, int action)
 {
@@ -20,6 +25,23 @@ static void	set_status(t_philo *philo, int action)
 	pthread_mutex_unlock(&philo->status.mutex);
 }
 
+static int	get_status(t_philo *philo)
+{
+	int	status;
+
+	pthread_mutex_lock(&philo->status.mutex);
+	status = philo->status.value;
+	pthread_mutex_unlock(&philo->status.mutex);
+	return (status);
+}
+
+static void	do_die(t_philo *philo)
+{
+	print_status(philo, "has died");
+	set_status(philo, DEAD);
+	set_var(&philo->data->state, STOPED);
+}
+
 static void	do_sleep(t_philo *philo, t_param param)
 {
 	print_status(philo, "is sleeping");
@@ -27,20 +49,26 @@ static void	do_sleep(t_philo *philo, t_param param)
 	usleep(param.time_to_sleep * 1000);
 }
 
-static void	do_eat(t_philo *philo, t_param param)
+static int	do_eat(t_philo *philo, t_param param)
 {
 	print_status(philo, "is thinking");
 	set_status(philo, THINK);
 	// if (philo->number % 2)
 	// {
-		printf("* %d left fork status=%d\n", philo->number, get_var(philo->left_fork));
 		while (get_var(philo->left_fork) != 0)
-			;
+		{
+			if (is_starving(philo, param))
+				return (do_die(philo), 0);
+			usleep(10 * 1000);
+		}
 		set_var(philo->left_fork, philo->number);
 		print_status(philo, "has taken left fork");
-		printf("* %d right fork status=%d\n", philo->number, get_var(philo->right_fork));
 		while (get_var(philo->right_fork) != 0)
-			;
+		{
+			if (is_starving(philo, param))
+				return (do_die(philo), 0);
+			usleep(10 * 1000);
+		}
 		set_var(philo->right_fork, philo->number);
 		print_status(philo, "has taken right fork");
 	// }
@@ -60,6 +88,7 @@ static void	do_eat(t_philo *philo, t_param param)
 	usleep(param.time_to_eat * 1000);
 	set_var(philo->left_fork, 0);
 	set_var(philo->right_fork, 0);
+	return (1);
 }
 
 void	*philo_routine(void *ptr)
@@ -77,7 +106,13 @@ void	*philo_routine(void *ptr)
 		// if (philo->number % 2)
 		// {
 			do_eat(philo, philo->data->param);
+			if (get_status(philo) == DEAD
+				|| get_var(&philo->data->state) != RUNNING)
+				break ;
 			do_sleep(philo, philo->data->param);
+			if (get_status(philo) == DEAD
+				|| get_var(&philo->data->state) != RUNNING)
+				break ;
 		// }
 		// else
 		// {

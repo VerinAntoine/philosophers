@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:57:39 by averin            #+#    #+#             */
-/*   Updated: 2024/02/21 10:34:08 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/22 11:20:08 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_status
 		EAT = 1,
 		THINK,
 		SLEEP,
+		DEAD,
 	}				value;
 	pthread_mutex_t	mutex;
 	long			action_time;

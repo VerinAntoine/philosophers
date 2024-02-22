@@ -1,7 +1,11 @@
 NAME		:= philo
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -pthread -fsanitize=thread -g3
+CFLAGS		:= -Wall -Wextra -Werror -pthread -g3
 DEPFLAGS	:= -MMD -MP
+
+ifeq (thread, $(filter thread,$(MAKECMDGOALS)))
+	CFLAGS += -fsanitize=thread
+endif
 
 OBJS_DIR	:= obj
 SRCS_DIR	:= src
@@ -44,6 +48,8 @@ fclean: clean
 
 .PHONY: re
 re: fclean $(NAME)
+
+thread: re
 
 .PHONY: norm
 norm:

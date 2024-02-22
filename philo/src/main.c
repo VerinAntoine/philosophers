@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2024/02/21 12:31:21 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/22 13:19:51 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	setup_philo(t_data *data, t_fork *forks, t_philo **philos)
 	{
 		(*philos)[i].number = i + 1;
 		(*philos)[i].data = data;
-		printf("* %d left=%d right=%d\n", i + 1, i, (i + 1) % data->param.philo_number);
 		(*philos)[i].right_fork = &(forks[i]);
 		(*philos)[i].left_fork = &(forks[(i + 1) % data->param.philo_number]);
 		pthread_mutex_init(&(*philos)[i].status.mutex, NULL);
@@ -73,6 +72,20 @@ void	wait_threads(t_param param, t_philo *philos)
 		pthread_join(philos[i].thread, NULL);
 }
 
+void	clean_philo(t_philo *philos, t_fork *forks, t_param param)
+{
+	int	i;
+
+	i = -1;
+	while (++i < param.philo_number)
+	{
+		pthread_mutex_destroy(&philos[i].status.mutex);
+		pthread_mutex_destroy(&forks[i].mutex);
+	}
+	free(philos);
+	free(forks);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_data	data;
@@ -85,11 +98,12 @@ int	main(int argc, char *argv[])
 		return (printf(ERROR_USAGE, argv[0]), 1);
 	pthread_mutex_init(&data.write, NULL);
 	init_var(&data.state, WAITING);
-	print_params(data.param);
+	// print_params(data.param);
 	init_forks(data.param, &forks);
 	setup_philo(&data, forks, &philos);
 	set_var(&data.state, RUNNING);
-	// WATCH PHILOS
 	wait_threads(data.param, philos);
+	pthread_mutex_destroy(&data.write);
+	clean_philo(philos, forks, data.param);
 	return (0);
 }
