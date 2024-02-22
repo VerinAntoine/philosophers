@@ -58,6 +58,7 @@ static int	do_eat(t_philo *philo, t_param param)
 		{
 			if (is_starving(philo, param))
 				return (do_die(philo), 1);
+			usleep(1 * 1000);
 		}
 		set_var(philo->left_fork, philo->number);
 		print_status(philo, "has taken left fork");
@@ -65,6 +66,7 @@ static int	do_eat(t_philo *philo, t_param param)
 		{
 			if (is_starving(philo, param))
 				return (do_die(philo), 1);
+			usleep(1 * 1000);
 		}
 		set_var(philo->right_fork, philo->number);
 		print_status(philo, "has taken right fork");
@@ -103,9 +105,13 @@ void	*philo_routine(void *ptr)
 		// if (philo->number % 2)
 		// {
 			do_eat(philo, philo->data->param);
-			if (get_status(philo) == DEAD)
-				return (0);
+			if (get_status(philo) == DEAD
+				|| get_var(&philo->data->state) != RUNNING)
+				return (print_status(philo, "has starved"), NULL);
 			do_sleep(philo, philo->data->param);
+			if (get_status(philo) == DEAD
+				|| get_var(&philo->data->state) != RUNNING)
+				return (print_status(philo, "has starved"), NULL);
 		// }
 		// else
 		// {
@@ -113,7 +119,7 @@ void	*philo_routine(void *ptr)
 		// 	do_eat(philo, philo->data->param);
 		// }
 	}
-	print_status(philo, "has finished");
+	// print_status(philo, "has finished");
 	set_status(philo, FINISHED);
 	return (0);
 }

@@ -63,19 +63,23 @@ int	init_forks(t_param param, t_fork **forks)
 	return (0);
 }
 
-void	wait_threads(t_param param, t_philo *philos)
+void	wait_threads(t_data *data, t_philo *philos)
 {
 	int	i;
 
 	while (1)
 	{
 		i = -1;
-		while (++i < param.philo_number)
+		while (++i < data->param.philo_number)
 			if (get_status(&philos[i]) == DEAD)
-				exit(0);
-		usleep(10 * 1000);
+			{
+				set_var(&data->state, FINISHED);
+				break ;
+			}
+		usleep(1 * 1000);
 	}
-	while (++i < param.philo_number)
+	i = -1;
+	while (++i < data->param.philo_number)
 		pthread_join(philos[i].thread, NULL);
 }
 
@@ -109,8 +113,8 @@ int	main(int argc, char *argv[])
 	init_forks(data.param, &forks);
 	setup_philo(&data, forks, &philos);
 	set_var(&data.state, RUNNING);
-	wait_threads(data.param, philos);
+	wait_threads(&data, philos);
 	pthread_mutex_destroy(&data.write);
 	clean_philo(philos, forks, data.param);
-	exit(0);
+	return (0);
 }
