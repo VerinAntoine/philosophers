@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2024/02/22 13:19:51 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/22 14:51:33 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_status(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(&philo->data->write);
-	printf("[%ld] %d %s\n", get_miliseconds(), philo->number, msg);
+	printf("%ld %d %s\n", get_miliseconds(), philo->number, msg);
 	pthread_mutex_unlock(&philo->data->write);
 }
 
@@ -67,7 +67,14 @@ void	wait_threads(t_param param, t_philo *philos)
 {
 	int	i;
 
-	i = -1;
+	while (1)
+	{
+		i = -1;
+		while (++i < param.philo_number)
+			if (get_status(&philos[i]) == DEAD)
+				exit(0);
+		usleep(10 * 1000);
+	}
 	while (++i < param.philo_number)
 		pthread_join(philos[i].thread, NULL);
 }
@@ -105,5 +112,5 @@ int	main(int argc, char *argv[])
 	wait_threads(data.param, philos);
 	pthread_mutex_destroy(&data.write);
 	clean_philo(philos, forks, data.param);
-	return (0);
+	exit(0);
 }
