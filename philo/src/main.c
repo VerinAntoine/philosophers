@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2024/02/22 14:51:33 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/23 15:10:17 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int	setup_philo(t_data *data, t_fork *forks, t_philo **philos)
 		(*philos)[i].data = data;
 		(*philos)[i].right_fork = &(forks[i]);
 		(*philos)[i].left_fork = &(forks[(i + 1) % data->param.philo_number]);
-		pthread_mutex_init(&(*philos)[i].status.mutex, NULL);
+		init_var(&(*philos)[i].status, 0);
+		init_var(&(*philos)[i].eat_count, 0);
 		if (pthread_create(&(*philos)[i].thread, NULL, &philo_routine,
 				&(*philos)[i]) == -1)
 			return (perror("thread"), EGEN);
@@ -59,25 +60,43 @@ int	init_forks(t_param param, t_fork **forks)
 		return (EMEM);
 	i = -1;
 	while (++i < param.philo_number)
-		pthread_mutex_init(&(*forks)[i].mutex, NULL);
+		init_var(&(*forks)[i], 0);
 	return (0);
+}
+
+void	monitor_philos(t_param param, t_philo *philo)
+{
+	int	i;
+	int	finished;
+
+	while (1)
+	{
+		i = -1;
+		finished = 1;
+		while (++i < param.philo_number)
+		{
+			if (get_var(&philo[i].status) == DEAD)
+			{
+				set_var(&philo[i].data->state, STOPED);
+				return ;
+			}
+			if (param.eat_number == -1
+				|| get_var(&philo[i].eat_count) < param.eat_number)
+				finished = 0;
+		}
+		if (finished)
+		{
+			set_var(&philo[0].data->state, STOPED);
+			return ;
+		}
+		usleep(1);
+	}
 }
 
 void	wait_threads(t_data *data, t_philo *philos)
 {
 	int	i;
 
-	while (1)
-	{
-		i = -1;
-		while (++i < data->param.philo_number)
-			if (get_status(&philos[i]) == DEAD)
-			{
-				set_var(&data->state, FINISHED);
-				break ;
-			}
-		usleep(1 * 1000);
-	}
 	i = -1;
 	while (++i < data->param.philo_number)
 		pthread_join(philos[i].thread, NULL);
@@ -91,6 +110,7 @@ void	clean_philo(t_philo *philos, t_fork *forks, t_param param)
 	while (++i < param.philo_number)
 	{
 		pthread_mutex_destroy(&philos[i].status.mutex);
+		pthread_mutex_destroy(&philos[i].eat_count.mutex);
 		pthread_mutex_destroy(&forks[i].mutex);
 	}
 	free(philos);
@@ -109,12 +129,13 @@ int	main(int argc, char *argv[])
 		return (printf(ERROR_USAGE, argv[0]), 1);
 	pthread_mutex_init(&data.write, NULL);
 	init_var(&data.state, WAITING);
-	// print_params(data.param);
 	init_forks(data.param, &forks);
 	setup_philo(&data, forks, &philos);
 	set_var(&data.state, RUNNING);
+	monitor_philos(data.param, philos);
 	wait_threads(&data, philos);
 	pthread_mutex_destroy(&data.write);
+	pthread_mutex_destroy(&data.state.mutex);
 	clean_philo(philos, forks, data.param);
 	return (0);
 }

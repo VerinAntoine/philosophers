@@ -21,7 +21,7 @@ endef
 SRC := $(strip $(SRC))
 
 OBJS := $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRC))
-DEPS		:= $(patsubst %.c,$(OBJS_DIR)/%.d,$(SRC))
+DEPS := $(patsubst %.c,$(OBJS_DIR)/%.d,$(SRC))
 
 $(NAME): $(OBJS)
 	@echo '* Assembling $(NAME)'

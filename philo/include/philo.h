@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:57:39 by averin            #+#    #+#             */
-/*   Updated: 2024/02/22 13:41:17 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/23 15:09:36 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,13 @@ typedef struct s_var
 
 typedef t_var t_fork;
 
-typedef struct s_status
+enum	e_action
 {
-	enum	e_action
-	{
-		EAT = 1,
-		THINK,
-		SLEEP,
-		DEAD,
-		FINISHED,
-	}				value;
-	pthread_mutex_t	mutex;
-	long			action_time;
-}	t_status;
+	EAT = 1,
+	THINK,
+	SLEEP,
+	DEAD,
+};
 
 enum	e_state
 {
@@ -74,7 +68,9 @@ typedef struct s_philo
 {
 	int			number;
 	pthread_t	thread;
-	t_status	status;
+	t_var		status;
+	long		last_eat;
+	t_var		eat_count;
 	t_fork		*left_fork;
 	t_fork		*right_fork;
 	t_data		*data;
@@ -89,10 +85,10 @@ void	*ft_calloc(size_t nmemb, size_t size);
 int		parse_params(char **argv, t_param *params);
 void	print_params(t_param param);
 
-int		get_status(t_philo *philo);
 void	*philo_routine(void *ptr);
 
 void	init_var(t_var *var, int val);
+void	incr_var(t_var *var);
 void	set_var(t_var *var, int val);
 int		get_var(t_var *var);
 
