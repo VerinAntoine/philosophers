@@ -6,11 +6,22 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:16:39 by averin            #+#    #+#             */
-/*   Updated: 2024/02/16 09:32:04 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/23 15:06:29 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include "limits.h"
+
+static int	ft_strlen(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
 /**
  * Transform a string to an int
@@ -19,7 +30,7 @@
  */
 int	ft_atoi(const char *nptr)
 {
-	int	r;
+	long	r;
 
 	r = 0;
 	if (*nptr == '\0')
@@ -32,6 +43,8 @@ int	ft_atoi(const char *nptr)
 		r += *nptr - '0';
 		nptr++;
 	}
+	if (r > INT_MAX || ft_strlen(nptr) > 11)
+		return (-1);
 	return (r);
 }
 

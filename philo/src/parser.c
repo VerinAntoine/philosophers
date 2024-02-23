@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:15:17 by averin            #+#    #+#             */
-/*   Updated: 2024/02/15 10:02:31 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/23 15:06:13 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	print_params(t_param param)
 int	parse_params(char **argv, t_param *params)
 {
 	params->philo_number = ft_atoi(argv[0]);
+	if (params->philo_number > 400)
+		return (0);
 	params->time_to_die = ft_atoi(argv[1]);
 	params->time_to_eat = ft_atoi(argv[2]);
 	params->time_to_sleep = ft_atoi(argv[3]);
