@@ -3,3 +3,6 @@
 */obj
 
 philo/philo
+log_philo
+test.sh
+valgrind_philo.log
