@@ -55,8 +55,10 @@ static int	ft_strlen(const char *s)
 int	ft_atoi(const char *nptr)
 {
 	long	r;
+	int		len;
 
 	r = 0;
+	len = ft_strlen(nptr);
 	if (*nptr == '\0')
 		return (-1);
 	while (*nptr)
@@ -67,7 +69,7 @@ int	ft_atoi(const char *nptr)
 		r += *nptr - '0';
 		nptr++;
 	}
-	if (r > INT_MAX || ft_strlen(nptr) > 11)
+	if (r > INT_MAX || len > 11)
 		return (-1);
 	return (r);
 }
