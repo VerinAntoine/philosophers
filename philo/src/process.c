@@ -26,12 +26,19 @@ static int	is_starving(t_philo *philo, t_param param)
 
 static void	do_die(t_philo *philo)
 {
-	print_status(philo, "has died");
-	set_var(&philo->status, DEAD);
+	print_status(philo, "died");
+	// set_var(&philo->status, DEAD);
+	set_var(&philo->data->state, STOPED);
 }
 
 static void	do_sleep(t_philo *philo, t_param param)
 {
+	if (param.time_to_sleep > param.time_to_die)
+	{
+		usleep(param.time_to_die * 1000);
+		do_die(philo);
+		return ;
+	}
 	print_status(philo, "is sleeping");
 	set_var(&philo->status, SLEEP);
 	usleep(param.time_to_sleep * 1000);
@@ -50,7 +57,7 @@ static int	do_eat(t_philo *philo, t_param param)
 		usleep(1 * 1000);
 	}
 	set_var(philo->left_fork, philo->number);
-	print_status(philo, "has taken left fork");
+	print_status(philo, "has taken a fork");
 	while (get_var(philo->right_fork) != 0)
 	{
 		if (get_var(&philo->data->state) != RUNNING)
@@ -60,7 +67,7 @@ static int	do_eat(t_philo *philo, t_param param)
 		usleep(1 * 1000);
 	}
 	set_var(philo->right_fork, philo->number);
-	print_status(philo, "has taken right fork");
+	print_status(philo, "has taken a fork");
 	print_status(philo, "is eating");
 	set_var(&philo->status, EAT);
 	incr_var(&philo->eat_count);
@@ -74,23 +81,22 @@ static int	do_eat(t_philo *philo, t_param param)
 void	*philo_routine(void *ptr)
 {
 	t_philo	*philo;
-	int		i;
-	int		start;
+	// int		start;
 
 	philo = ptr;
 	while (get_var(&philo->data->state) == WAITING)	
 		usleep(1 * 1000);
 	philo->last_eat = get_miliseconds();
-	i = -1;
-	start = philo->number % 2;
+	// start = philo->number % 2;
 	while (get_var(&philo->data->state) == RUNNING)
 	{
-		if (!start)
-			do_eat(philo, philo->data->param);
-		if (get_var(&philo->data->state) != RUNNING || get_var(&philo->status) == DEAD)
+		// if (!start)
+		do_eat(philo, philo->data->param);
+		if (get_var(&philo->data->state) != RUNNING
+			|| get_var(&philo->status) == DEAD)
 			return (0);
 		do_sleep(philo, philo->data->param);
-		start = 0;
+		// start = 0;
 	}
 	return (0);
 }

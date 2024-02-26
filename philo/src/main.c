@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:58:01 by averin            #+#    #+#             */
-/*   Updated: 2024/02/23 15:10:17 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/24 17:44:14 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,17 @@ void	monitor_philos(t_param param, t_philo *philo)
 	int	i;
 	int	finished;
 
-	while (1)
+	while (get_var(&philo->data->state) == RUNNING)
 	{
 		i = -1;
 		finished = 1;
 		while (++i < param.philo_number)
 		{
-			if (get_var(&philo[i].status) == DEAD)
-			{
-				set_var(&philo[i].data->state, STOPED);
-				return ;
-			}
+			// if (get_var(&philo[i].status) == DEAD)
+			// {
+			// 	set_var(&philo[i].data->state, STOPED);
+			// 	return ;
+			// }
 			if (param.eat_number == -1
 				|| get_var(&philo[i].eat_count) < param.eat_number)
 				finished = 0;
