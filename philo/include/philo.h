@@ -6,7 +6,7 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 10:57:39 by averin            #+#    #+#             */
-/*   Updated: 2024/02/23 15:09:36 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/26 11:09:33 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_var
 	int				content;
 }	t_var;
 
-typedef t_var t_fork;
+typedef t_var	t_fork;
 
 enum	e_action
 {
@@ -59,6 +59,7 @@ typedef struct s_param
 
 typedef struct s_data
 {
+	long			start;
 	pthread_mutex_t	write;
 	t_var			state;
 	t_param			param;
@@ -81,6 +82,11 @@ long	get_miliseconds(void);
 
 int		ft_atoi(const char *nptr);
 void	*ft_calloc(size_t nmemb, size_t size);
+
+int		psleep(t_philo *philo, t_param param, int ms);
+int		is_starving(t_philo *philo, t_param param);
+void	clean_philo(t_philo *philos, t_fork *forks, t_param param);
+int		setup_philo(t_data *data, t_fork *forks, t_philo **philos);
 
 int		parse_params(char **argv, t_param *params);
 void	print_params(t_param param);

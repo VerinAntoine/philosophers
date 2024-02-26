@@ -6,12 +6,36 @@
 /*   By: averin <averin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:16:39 by averin            #+#    #+#             */
-/*   Updated: 2024/02/23 15:06:29 by averin           ###   ########.fr       */
+/*   Updated: 2024/02/26 10:24:32 by averin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include "limits.h"
+
+void	print_status(t_philo *philo, char *msg)
+{
+	long	ms;
+
+	pthread_mutex_lock(&philo->data->write);
+	if (get_var(&philo->data->state) != RUNNING)
+	{
+		pthread_mutex_unlock(&philo->data->write);
+		return ;
+	}
+	ms = get_miliseconds();
+	printf("%ld %d %s\n", ms - philo->data->start, philo->number, msg);
+	pthread_mutex_unlock(&philo->data->write);
+}
+
+long	get_miliseconds(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		return (printf("! time error\n"), -1);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
 
 static int	ft_strlen(const char *s)
 {

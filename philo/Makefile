@@ -14,6 +14,7 @@ INCLDS_DIR	:= include
 define SRC :=
 	main.c
 	parser.c
+	philo.c
 	process.c
 	utils.c
 	var.c
