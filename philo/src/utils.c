@@ -69,7 +69,7 @@ int	ft_atoi(const char *nptr)
 		r += *nptr - '0';
 		nptr++;
 	}
-	if (r > 10000 || len > 11)
+	if (r == 0 || r > 10000 || len > 11)
 		return (-1);
 	return (r);
 }
